@@ -128,6 +128,12 @@ if $project_configuration; then
   cd $initialPATH
   python wsgiConfig.py $projecDest
 
+  # create folder used by loggers if not exist
+  LOG_DIR=$projecDest/server/server/logs
+  if [ -d "$LOG_DIR" ]; then
+    mkdir $LOG_DIR
+  fi
+
   # install all dependencies of python to the project
   cd $projecDest/server
   sudo pip install -r requirements.txt
