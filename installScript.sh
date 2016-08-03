@@ -132,6 +132,8 @@ if $project_configuration; then
   LOG_DIR=$projecDest/server/server/logs
   if [ -d "$LOG_DIR" ]; then
     mkdir $LOG_DIR
+    touch $LOG_DIR/file.log
+    chmod 777 $LOG_DIR/file.log
   fi
 
   # install all dependencies of python to the project
