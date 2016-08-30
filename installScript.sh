@@ -255,7 +255,7 @@ if $import_data; then
   echo ----
 
   cd $projecDest/server
-  python loadData.py busstop InitialData/busstops.csv service InitialData/services.csv servicesbybusstop InitialData/servicesbybusstop.csv servicestopdistance InitialData/servicestopdistance.csv ServiceLocation InitialData/servicelocation.csv event InitialData/events.csv route InitialData/routes.csv
+  python loadData.py busstop InitialData/busstop.csv service InitialData/services.csv servicesbybusstop InitialData/servicesbybusstop.csv servicestopdistance InitialData/servicestopdistance.csv ServiceLocation InitialData/servicelocation.csv event InitialData/events.csv route InitialData/routes.csv
 
   echo ----
   echo ----
