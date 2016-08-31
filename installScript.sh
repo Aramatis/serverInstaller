@@ -3,7 +3,7 @@
 create_user=false
 install_packages=false
 postgresql_configuration=false
-project_configuration=false
+project_configuration=true
 apache_configuration=false
 import_data=false
 
@@ -115,7 +115,9 @@ if $project_configuration; then
   python wsgiConfig.py $PROJECT_DEST
 
   # create secret_key.txt file
-  echo "putYourSecretKeyHere" > $PROJECT_DEST/server/keys/secret_key.txt
+  SECRET_KEY_FILE=$PROJECT_DEST/server/server/keys/secret_key.txt
+  touch $SECRET_KEY_FILE
+  echo "putYourSecretKeyHere" > $SECRET_KEY_FILE
 
   # create folder used by loggers if not exist
   LOG_DIR=$PROJECT_DEST/server/server/logs

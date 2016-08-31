@@ -12,7 +12,7 @@ else:
     for line in FILE:
          if "sys.path.append" in line:
                newLine.append('sys.path.append(\'' + pathProject + '/server\')\n')
-          else:
+         else:
                newLine.append(line)
 
     FILE.close()
