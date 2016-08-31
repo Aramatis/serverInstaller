@@ -1,6 +1,6 @@
 #! /bin/bash
 
-create_user=true
+create_user=false
 install_packages=false
 postgresql_configuration=false
 project_configuration=false
@@ -91,16 +91,16 @@ if $project_configuration; then
   echo --
   echo ""
 
-  #go to home path
-  cd
-
   # to Documents folder
-  if cd Documentos; then
+  $PROJECT_DEST=/home/server/Documents
+  if cd $PROJECT_DEST; then
      pwd
   else
-    mkdir Documentos
-    cd Documentos
+    mkdir -p $PROJECT_DEST
   fi
+
+  # go to project destination path
+  cd $PROJECT_DEST
 
   # clone project from git
   echo ""
@@ -110,23 +110,23 @@ if $project_configuration; then
   echo ""
   git clone https://github.com/InspectorIncognito/server.git
 
-  #destination of the project
-  projecDest=$(pwd)
-
   # configure wsgi
   cd $initialPATH
-  python wsgiConfig.py $projecDest
+  python wsgiConfig.py $PROJECT_DEST
+
+  # create secret_key.txt file
+  echo "putYourSecretKeyHere" > $PROJECT_DEST/server/keys/secret_key.txt
 
   # create folder used by loggers if not exist
-  LOG_DIR=$projecDest/server/server/logs
+  LOG_DIR=$PROJECT_DEST/server/server/logs
   if [ -d "$LOG_DIR" ]; then
-    mkdir $LOG_DIR
+    mkdir -p $LOG_DIR
     touch $LOG_DIR/file.log
     chmod 777 $LOG_DIR/file.log
   fi
 
   # install all dependencies of python to the project
-  cd $projecDest/server
+  cd $PROJECT_DEST/server
   sudo pip install -r requirements.txt
 
   # initialize the database
@@ -141,7 +141,7 @@ if $project_configuration; then
   # create the html
   cd DataDictionary/templates/
   python parseMKtoHTML.py
-  cd $projecDest/server
+  cd $PROJECT_DEST/server
 
   #running test
   coverage run --source='.' manage.py test
