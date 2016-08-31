@@ -1,10 +1,11 @@
 #! /bin/bash
 
-install_packages=true
-postgresql_configuration=true
-project_configuration=true
-apache_configuration=true
-import_data=true
+create_user=true
+install_packages=false
+postgresql_configuration=false
+project_configuration=false
+apache_configuration=false
+import_data=false
 
 # Install all necesary things
 # use eog to view image through ssh by enabling the -X flag
@@ -30,33 +31,21 @@ ip_server=$2
 # stores the current path
 initialPATH=$(pwd)
 
+if $create_user; then
+    USER_NAME="server"
+    useradd $USER_NAME
+    passwd $USER_NAME
+fi
+
 if $install_packages; then
-	# PPA: Personal Package Archive. PPA's are repositories provided by the community
-	sudo add-apt-repository ppa:webupd8team/java
+    # PPA: Personal Package Archive. PPA's are repositories provided by the community
+    sudo add-apt-repository ppa:webupd8team/java
     # replace debian distribution name for ubuntu distribution name. It is necessary for debian distributions
     sed -i 's/wheezy/trusty/g' /etc/apt/sources.list.d/webupd8team-java-wheezy.list 
-	sudo apt-get update 
-	sudo apt-get --yes --force-yes install apache2 git python-setuptools libapache2-mod-wsgi python-dev libpq-dev postgresql postgresql-contrib eog oracle-java8-installer 
-	# easy_install is a python module bundled with setuptools that lets you automatically download, build, install, and manage Python packages.
-	sudo easy_install pip
-
-  # install apache 2.4.18. it's necessary in debian 7 because debian 7 use apache 2.2
-  #sudo wget -nc http://www-us.apache.org/dist//httpd/httpd-2.4.18.tar.gz
-  #sudo wget -nc http://www-eu.apache.org/dist//apr/apr-util-1.5.4.tar.gz
-  #sudo wget -nc http://www-eu.apache.org/dist//apr/apr-1.5.2.tar.gz
-  #tar -xzvf apr-util-1.5.4.tar.gz
-  #tar -xzvf apr-1.5.2.tar.gz
-  #tar -xzvf httpd-2.4.18.tar.gz
-  #./apr-1.5.2/configure --prefix=./srclib/apr
-  #./apr-1.5.2/make
-  #./apr-1.5.2/make install
-  #./apr-util-1.5.4/configure --prefix=./srclib/apr-util --wit-apr=../srclib/apr-lib
-  #./apr-util-1.5.4/make  
-  #./apr-util-1.5.4/make install 
-  #./httpd-2.4.18/configure --prefix=/usr/local/apache2 --with-apr= --with-apr-util=
-  #./httpd-2.4.18/make
-  #./httpd-2.4.18/make install
-  #/usr/local/apache2/bin/apachectl start 
+    sudo apt-get update 
+    sudo apt-get --yes --force-yes install apache2 git python-setuptools libapache2-mod-wsgi python-dev libpq-dev postgresql postgresql-contrib eog oracle-java8-installer 
+    # easy_install is a python module bundled with setuptools that lets you automatically download, build, install, and manage Python packages.
+    sudo easy_install pip
 fi
 
 #configure postgresql
