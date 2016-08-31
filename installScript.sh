@@ -3,8 +3,8 @@
 create_user=false
 install_packages=false
 postgresql_configuration=false
-project_configuration=true
-apache_configuration=false
+project_configuration=false
+apache_configuration=true
 import_data=false
 
 # Install all necesary things
@@ -25,11 +25,12 @@ if [ -z "$2" ]
     exit 
 fi
 
-keyStorePass=$1
-ip_server=$2
+KEY_STORE_PASS=$1
+IP_SERVER=$2
 
 # stores the current path
 initialPATH=$(pwd)
+PROJECT_DEST=/home/server/Documents
 
 if $create_user; then
     USER_NAME="server"
@@ -38,12 +39,10 @@ if $create_user; then
 fi
 
 if $install_packages; then
+    sudo apt-get update 
     # PPA: Personal Package Archive. PPA's are repositories provided by the community
     sudo add-apt-repository ppa:webupd8team/java
-    # replace debian distribution name for ubuntu distribution name. It is necessary for debian distributions
-    sed -i 's/wheezy/trusty/g' /etc/apt/sources.list.d/webupd8team-java-wheezy.list 
-    sudo apt-get update 
-    sudo apt-get --yes --force-yes install apache2 git python-setuptools libapache2-mod-wsgi python-dev libpq-dev postgresql postgresql-contrib eog oracle-java8-installer 
+    sudo apt-get --yes --force-yes install build-essential apache2 git python-setuptools libapache2-mod-wsgi python-dev libpq-dev postgresql postgresql-contrib eog oracle-java8-installer
     # easy_install is a python module bundled with setuptools that lets you automatically download, build, install, and manage Python packages.
     sudo easy_install pip
 fi
@@ -92,7 +91,6 @@ if $project_configuration; then
   echo ""
 
   # to Documents folder
-  $PROJECT_DEST=/home/server/Documents
   if cd $PROJECT_DEST; then
      pwd
   else
@@ -121,11 +119,9 @@ if $project_configuration; then
 
   # create folder used by loggers if not exist
   LOG_DIR=$PROJECT_DEST/server/server/logs
-  if [ -d "$LOG_DIR" ]; then
-    mkdir -p $LOG_DIR
-    touch $LOG_DIR/file.log
-    chmod 777 $LOG_DIR/file.log
-  fi
+  mkdir -p $LOG_DIR
+  touch $LOG_DIR/file.log
+  chmod 777 $LOG_DIR/file.log
 
   # install all dependencies of python to the project
   cd $PROJECT_DEST/server
@@ -167,7 +163,7 @@ if $apache_configuration; then
   cd $initialPATH
   configApache="transapp_server.conf"
 
-  sudo python configApache.py $projecDest $ip_server $configApache
+  sudo python configApache.py $PROJECT_DEST $IP_SERVER $configApache
   sudo a2dissite 000-default.conf
   sudo a2ensite $configApache
   # ssl configuration
@@ -185,7 +181,7 @@ if $apache_configuration; then
   # create android key store
   # -nc refuse to download newer copies of the file
   sudo wget -nc http://bouncycastle.org/download/bcprov-jdk16-146.jar
-  sudo keytool -importcert -file apache.crt -keystore transapp.store -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath bcprov-jdk16-146.jar -storetype BKS -storepass $keyStorePass
+  sudo keytool -importcert -file apache.crt -keystore transapp.store -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath bcprov-jdk16-146.jar -storetype BKS -storepass $KEY_STORE_PASS
 
   sudo service apache2 reload
 
