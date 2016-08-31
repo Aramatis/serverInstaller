@@ -1,11 +1,11 @@
 #! /bin/bash
 
-create_user=false
-install_packages=false
-postgresql_configuration=false
-project_configuration=false
+create_user=true
+install_packages=true
+postgresql_configuration=true
+project_configuration=true
 apache_configuration=true
-import_data=false
+import_data=true
 
 # Install all necesary things
 # use eog to view image through ssh by enabling the -X flag
@@ -40,6 +40,7 @@ fi
 
 if $install_packages; then
     sudo apt-get update 
+    sudo apt-get upgrade
     # PPA: Personal Package Archive. PPA's are repositories provided by the community
     sudo add-apt-repository ppa:webupd8team/java
     sudo apt-get --yes --force-yes install build-essential apache2 git python-setuptools libapache2-mod-wsgi python-dev libpq-dev postgresql postgresql-contrib eog oracle-java8-installer
@@ -241,7 +242,7 @@ if $import_data; then
   echo ----
   echo ----
 
-  cd $projecDest/server
+  cd $PROJECT_DEST/server
   python loadData.py busstop InitialData/busstop.csv service InitialData/services.csv servicesbybusstop InitialData/servicesbybusstop.csv servicestopdistance InitialData/servicestopdistance.csv ServiceLocation InitialData/servicelocation.csv event InitialData/events.csv route InitialData/routes.csv
 
   echo ----
