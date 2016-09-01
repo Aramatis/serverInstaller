@@ -181,7 +181,7 @@ if $apache_configuration; then
 
   # create android key store
   # -nc refuse to download newer copies of the file
-  sudo wget -nc http://bouncycastle.org/download/bcprov-jdk16-146.jar
+  sudo wget -nc https://bouncycastle.org/download/bcprov-jdk15on-155.jar
   sudo keytool -importcert -file apache.crt -keystore transapp.store -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath bcprov-jdk16-146.jar -storetype BKS -storepass $KEY_STORE_PASS
 
   sudo service apache2 reload
