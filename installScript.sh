@@ -1,49 +1,66 @@
 #! /bin/bash
 
-create_user=true
+#####################################################################
+# COMMAND LINE INPUT
+#####################################################################
+if [ -z "$1" ]; then
+    echo "No se especifico la clave para el key store"
+    exit 
+fi
+
+if [ -z "$2" ]; then
+    echo "No se especifico la ip del servidor"
+    exit 
+fi
+KEY_STORE_PASS=$1
+IP_SERVER=$2
+
+
+#####################################################################
+# CONFIGURATION
+#####################################################################
+
 install_packages=true
 postgresql_configuration=true
 project_configuration=true
 apache_configuration=true
 import_data=true
 
-# Install all necesary things
-# use eog to view image through ssh by enabling the -X flag
-# Ejample: ssh -X .....
-# then run eog <image>
-# and wait 
+USER_NAME="matias"
+PROJECT_DEST=/home/"$USER_NAME"/Documents
 
-if [ -z "$1" ]
-  then
-    echo "No se especifico la clave para el key store"
-    exit 
-fi
 
-if [ -z "$2" ]
-  then
-    echo "No se especifico la ip del servidor"
-    exit 
-fi
+initialPATH=$(pwd)
 
-KEY_STORE_PASS=$1
-IP_SERVER=$2
+#####################################################################
+# USER CONFIGURATION
+#####################################################################
 
 # stores the current path
-initialPATH=$(pwd)
-PROJECT_DEST=/home/server/Documents
-
-if $create_user; then
-    USER_NAME="server"
+if id "$USER_NAME" >/dev/null 2>&1; then
+    echo "User $USER_NAME already exists.. skipping"
+else
+    echo "User $USER_NAME does not exists.. CREATING!"
     useradd $USER_NAME
     passwd $USER_NAME
 fi
 
+
 if $install_packages; then
+    # Install all necesary things
+    # use eog to view image through ssh by enabling the -X flag
+    # Ejample: ssh -X .....
+    # then run eog <image>
+    # and wait 
     sudo apt-get update 
     sudo apt-get upgrade
-    # PPA: Personal Package Archive. PPA's are repositories provided by the community
+
+    # PPA for JAVA
     sudo add-apt-repository ppa:webupd8team/java
+
     sudo apt-get --yes --force-yes install build-essential apache2 git python-setuptools libapache2-mod-wsgi python-dev libpq-dev postgresql postgresql-contrib eog oracle-java8-installer
+    sudo apt-get install openssh-server
+    
     # easy_install is a python module bundled with setuptools that lets you automatically download, build, install, and manage Python packages.
     sudo easy_install pip
 fi
@@ -225,7 +242,7 @@ if $apache_configuration; then
 
   # this lets apache add new things to the media folder
   # to store the pictures of the free report
-  sudo adduser www-data ubuntu
+  sudo adduser www-data "$USER_NAME"
 
   echo ----
   echo ----
