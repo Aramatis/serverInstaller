@@ -21,7 +21,7 @@ PREREQUISITES
 
 This has only been tested on Ubuntu 14.04 machines. However, it should run on any debian distribution.
 
-	OBS: Wheezy has a problem with the apache version: TranSapp requires Apache >=2.4, but the official apache distribution in wheezy is 2.2. So you need to download apache from the official website.
+OBS: Wheezy has a problem with the apache version: TranSapp requires Apache >=2.4, but the official apache distribution in wheezy is 2.2. So you need to download apache from the official website.
 
 ## Superuser privileges
 
@@ -48,8 +48,8 @@ $ scp -i key -r install ubuntu@<ip>:/home/ubuntu
 ## Run the installer
 
 You need the following information:
-- <ANDROID_KEY_STORE_PASS>: used in store file for android app. This pass has to write in res/values/strings.xml "key_store" 
-- <SERVER_PUBLIC_IP> : used in apache configuration file
+- `<ANDROID_KEY_STORE_PASS>`: used in store file for android app. This pass has to write in res/values/strings.xml "key_store" 
+- `<SERVER_PUBLIC_IP>`: used in apache configuration file
 
 It is highly recommended to read the script before running it and ALSO EXECUTTE IT BY ONE PIECE AT A TIME!. Modify the configuration section on `installScript.sh` to select which steps do you want to run. The recommended way is to deactivate all steps and run then separately. 
 
@@ -62,10 +62,10 @@ The `project_configuration` step WILL FAIL!.. so, prefer setting the remaining s
 
 ### RUN
 
-```
+```(bash)
 # run with sudo
 $ sudo su
 $ bash installScript.sh <ANDROID_KEY_STORE_PASS> <SERVER_PUBLIC_IP>
 ```
 
-## Finally, sit down, wait, and enjoy! :).
+## Finally, sit down, wait 5-10 hours, and enjoy! :).
