@@ -1,36 +1,71 @@
 ====================================================
-To install the server in a machine.
+Considerations
 ====================================================
 
-Copy the folder install to the desired machine. It's tested on Ubuntu 14.04. 
-It should run on any debian distribution.
-OBS: in wheezy has a problem with apache version because de app needs 2.4 or grater but official apache distribution in wheezy is 2.2. So you need to download apache from official website.
+This repository mantains the code for deploying the TranSapp server on a linux machine, which means:
 
-We will install apache, postgresql and the server that runs on Django.
-The scrips handles all the configurations issues and the loading of initial data 
-(this task takes some time).
+- Step 1: It creates the linux user `"$USER_NAME"` (defaults to `"server"`) and prompts for his password.
+- Step 2: Installs server prerequisites: java8, apache, postgresql, ...
+- Step 3: It configures postgresql
+- Step 4: Clone and setup of the django app
+- Step 5: It configures apache
+- Step 6: Data import from CSV files
 
-The only thing that matters is that you have sudo provileges.
+The last step REALLY takes "half a day or so", so please be patient.
 
-If you want to bring up an AWS EC2 with ubuntu OS use:
+====================================================
+PREREQUISITES
+====================================================
 
-	scp -i key -r install ubuntu@<ip>:/home/ubuntu
+## Linux Machine with Ubuntu 14.04
 
-all the files to the machine, and then access to it through ssh (also use -i key).
+This has only been tested on Ubuntu 14.04 machines. However, it should run on any debian distribution.
 
-To install go to the install folder and run 
+	OBS: Wheezy has a problem with the apache version: TranSapp requires Apache >=2.4, but the official apache distribution in wheezy is 2.2. So you need to download apache from the official website.
 
-	bash installScript.sh <androidKeyStorePass> <ServerPublicIP>
+## Superuser privileges
 
-OBS*:
-    - <androidKeyStorePass> : used in store file for android app. This pass has to write in res/values/strings.xml "key_store" 
-    - <ServerPublicIP> : used in apache configuration file 
+The installation script requires sudo privileges.
 
-give the sudo pass if needed.
-The script is commented, read it if in doubt.
 
-OPTIONS
 
-In installScript.sh you can select what you want to execute changing the boolean variables in the begining of the file
+====================================================
+DEPLOYMENT
+====================================================
 
-Then wait, and enjoy! :-).
+## Get the installer
+
+```(bash)
+# Run on the target machine
+$ git clone https://github.com/InspectorIncognito/serverInstaller.git
+
+# or download anywhere and then copy the files to the server:
+# (e.g. if you want to bring up an AWS EC2 with ubuntu OS)
+# through ssh:
+$ scp -i key -r install ubuntu@<ip>:/home/ubuntu
+```
+
+## Run the installer
+
+You need the following information:
+- <ANDROID_KEY_STORE_PASS>: used in store file for android app. This pass has to write in res/values/strings.xml "key_store" 
+- <SERVER_PUBLIC_IP> : used in apache configuration file
+
+It is highly recommended to read the script before running it and ALSO EXECUTTE IT BY ONE PIECE AT A TIME!. Modify the configuration section on `installScript.sh` to select which steps do you want to run. The recommended way is to deactivate all steps and run then separately. 
+
+### KNOWN ISSUE
+
+The `project_configuration` step WILL FAIL!.. so, prefer setting the remaining steps variables to `false` and then fix it this way:
+- get a google key file from somewhere
+- place this key under `<django-git-cloned-folder>/server/keys`, under the name of `google_key.json`. 
+
+
+### RUN
+
+```
+# run with sudo
+$ sudo su
+$ bash installScript.sh <ANDROID_KEY_STORE_PASS> <SERVER_PUBLIC_IP>
+```
+
+## Finally, sit down, wait, and enjoy! :).

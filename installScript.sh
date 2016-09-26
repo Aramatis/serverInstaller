@@ -26,7 +26,7 @@ project_configuration=true
 apache_configuration=true
 import_data=true
 
-USER_NAME="matias"
+USER_NAME="server"
 PROJECT_DEST=/home/"$USER_NAME"/Documents
 
 
@@ -45,6 +45,10 @@ else
     passwd $USER_NAME
 fi
 
+
+#####################################################################
+# REQUIREMENTS
+#####################################################################
 
 if $install_packages; then
     # Install all necesary things
@@ -65,8 +69,10 @@ if $install_packages; then
     sudo easy_install pip
 fi
 
-#configure postgresql
 
+#####################################################################
+# POSTGRESQL
+#####################################################################
 if $postgresql_configuration; then
   echo ----
   echo ----
@@ -95,6 +101,10 @@ if $postgresql_configuration; then
   echo ----
 fi
 
+
+#####################################################################
+# CLONE SETUP DJANGO APP
+#####################################################################
 if $project_configuration; then
   echo ----
   echo ----
@@ -170,6 +180,10 @@ if $project_configuration; then
   echo ----
 fi
 
+
+#####################################################################
+# APACHE CONFIGURATION
+#####################################################################
 if $apache_configuration; then
   echo ----
   echo ----
@@ -251,6 +265,10 @@ if $apache_configuration; then
   echo ----
 fi
 
+
+#####################################################################
+# IMPORT DATA
+#####################################################################
 if $import_data; then
   echo ----
   echo ----
