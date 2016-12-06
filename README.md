@@ -1,10 +1,9 @@
 ====================================================
-Considerations
+Overview
 ====================================================
 
 This repository mantains the code for deploying the TranSapp server on a linux machine, which means:
-
-- Step 1: It creates the linux user `"$USER_NAME"` (defaults to `"server"`) and prompts for his password.
+- Step 1: linux user creation (defaults to `"server"`) and prompts for his password.
 - Step 2: Installs server prerequisites: java8, apache, postgresql, ...
 - Step 3: It configures postgresql
 - Step 4: Clone and setup of the django app
@@ -12,6 +11,7 @@ This repository mantains the code for deploying the TranSapp server on a linux m
 - Step 6: Data import from CSV files
 
 The last step REALLY takes "half a day or so", so please be patient.
+
 
 ====================================================
 PREREQUISITES
@@ -22,6 +22,7 @@ PREREQUISITES
 This has only been tested on Ubuntu 14.04 machines. However, it should run on any debian distribution.
 
 OBS: Wheezy has a problem with the apache version: TranSapp requires Apache >=2.4, but the official apache distribution in wheezy is 2.2. So you need to download apache from the official website.
+
 
 ## Superuser privileges
 
@@ -35,7 +36,7 @@ DEPLOYMENT
 
 ## Get the installer
 
-```(bash)
+```bash
 # Run on the target machine
 $ git clone https://github.com/InspectorIncognito/serverInstaller.git
 
@@ -62,7 +63,7 @@ The `project_configuration` step WILL FAIL!.. so, prefer setting the remaining s
 
 ### RUN
 
-```(bash)
+```bash
 # run with sudo
 $ sudo su
 $ bash installScript.sh <ANDROID_KEY_STORE_PASS> <SERVER_PUBLIC_IP>
