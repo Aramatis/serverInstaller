@@ -37,13 +37,12 @@ DEPLOYMENT
 ## Get the installer
 
 ```bash
-# Run on the target machine
+# clone directly on the target machine
 $ git clone https://github.com/InspectorIncognito/serverInstaller.git
 
-# or download anywhere and then copy the files to the server:
-# (e.g. if you want to bring up an AWS EC2 with ubuntu OS)
-# through ssh:
-$ scp -i key -r install ubuntu@<ip>:/home/ubuntu
+# or download anywhere and then copy the files to the visualization server:
+# e.g. if you want to bring up an AWS EC2 with ubuntu OS:
+$ scp -i <private_key> -r install <server-user>@<server-host>:/home/<server-user>
 ```
 
 ## Run the installer
