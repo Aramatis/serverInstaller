@@ -83,16 +83,16 @@ if $postgresql_configuration; then
   # get the version of psql
   psqlVersion=$(psql -V | egrep -o '[0-9]{1,}\.[0-9]{1,}')
   # change config of psql
-  python replaceConfigPSQL.py $psqlVersion
+  python replaceConfigPSQL.py "$psqlVersion"
   service postgresql restart
   # postgres user has to be owner of the file and folder that contain the file
   current_owner=$(stat -c '%U' .)
-  chown postgres $initialPATH/postgresqlConfig.sql
-  chown postgres $initialPATH
+  chown postgres "$initialPATH"/postgresqlConfig.sql
+  chown postgres "$initialPATH"
   # create user and database
-  sudo -u postgres psql -f $initialPATH/postgresqlConfig.sql
-  chown ${current_owner} $initialPATH/postgresqlConfig.sql
-  chown ${current_owner} $initialPATH
+  sudo -u postgres psql -f "$initialPATH"/postgresqlConfig.sql
+  chown "${current_owner}" "$initialPATH"/postgresqlConfig.sql
+  chown "${current_owner}" "$initialPATH"
 
   echo ----
   echo ----
@@ -141,22 +141,22 @@ if $project_configuration; then
   cd ..
 
   # configure wsgi
-  cd $initialPATH
-  python wsgiConfig.py $PROJECT_DEST
+  cd "$initialPATH"
+  python wsgiConfig.py "$PROJECT_DEST"
 
   # create secret_key.txt file
   SECRET_KEY_FILE=$PROJECT_DEST/server/server/keys/secret_key.txt
   touch $SECRET_KEY_FILE
-  echo "putYourSecretKeyHere" > $SECRET_KEY_FILE
+  echo "putYourSecretKeyHere" > "$SECRET_KEY_FILE"
 
   # create folder used by loggers if not exist
-  LOG_DIR=$PROJECT_DEST/server/server/logs
-  mkdir -p $LOG_DIR
+  LOG_DIR="$PROJECT_DEST"/server/server/logs
+  mkdir -p "$LOG_DIR"
   touch $LOG_DIR/file.log
-  chmod 777 $LOG_DIR/file.log
+  chmod 777 "$LOG_DIR"/file.log
 
   # install all dependencies of python to the project
-  cd $PROJECT_DEST/server
+  cd "$PROJECT_DEST"/server
   pip install -r requirements.txt
 
   # initialize the database
@@ -171,7 +171,7 @@ if $project_configuration; then
   # create the html
   cd DataDictionary/templates/
   python parseMKtoHTML.py
-  cd $PROJECT_DEST/server
+  cd "$PROJECT_DEST"/server
 
   #running test
   coverage run --source='.' manage.py test
@@ -188,7 +188,7 @@ fi
 #####################################################################
 # APACHE CONFIGURATION
 #####################################################################
-if $apache_configuration; then
+if "$apache_configuration"; then
   echo ----
   echo ----
   echo "Apache configuration"
@@ -196,12 +196,12 @@ if $apache_configuration; then
   echo ----
   # configure apache 2.4
 
-  cd $initialPATH
+  cd "$initialPATH"
   configApache="transapp_server.conf"
 
-  sudo python configApache.py $PROJECT_DEST $IP_SERVER $configApache
+  sudo python configApache.py "$PROJECT_DEST" "$IP_SERVER" "$configApache"
   sudo a2dissite 000-default.conf
-  sudo a2ensite $configApache
+  sudo a2ensite "$configApache"
   # ssl configuration
   sudo cp ssl.conf /etc/apache2/mods-available
   sudo a2enmod ssl
@@ -217,7 +217,7 @@ if $apache_configuration; then
   # create android key store
   # -nc refuse to download newer copies of the file
   sudo wget -nc https://bouncycastle.org/download/bcprov-jdk15on-155.jar
-  sudo keytool -importcert -file apache.crt -keystore transapp.store -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath bcprov-jdk15on-155.jar -storetype BKS -storepass $KEY_STORE_PASS
+  sudo keytool -importcert -file apache.crt -keystore transapp.store -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath bcprov-jdk15on-155.jar -storetype BKS -storepass "$KEY_STORE_PASS"
 
   sudo service apache2 reload
 
@@ -253,7 +253,7 @@ if $apache_configuration; then
   # arg6 MaxRequestWorkers: maximum number of threads
   # arg7 MaxConnectionsPerChild: maximum number of 
   #      requests a server process serves
-  cd $initialPATH
+  cd "$initialPATH"
   sudo python apacheSetup.py 1 10 50 30 25 75
 
   sudo service apache2 restart
@@ -291,7 +291,7 @@ if $import_data; then
   echo ----
 fi
 
-cd $initialPATH
+cd "$initialPATH"
 
 echo "Ready, if everything went well you stop here."
 echo "Otherwise run in the project folder python manage.py runserver 0.0.0.0:8080 and try it,"
