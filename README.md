@@ -37,6 +37,9 @@ DEPLOYMENT
 ## Get the installer
 
 ```bash
+# move to directory with permissions to read and write
+cd /tmp
+
 # clone directly on the target machine
 $ git clone https://github.com/InspectorIncognito/serverInstaller.git
 
