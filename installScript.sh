@@ -21,7 +21,7 @@ IP_SERVER=$2
 #####################################################################
 
 install_packages=false
-postgresql_configuration=true
+postgresql_configuration=false
 project_configuration=false
 apache_configuration=false
 import_data=false
@@ -90,7 +90,7 @@ if $postgresql_configuration; then
   chown postgres $initialPATH/postgresqlConfig.sql
   chown postgres $initialPATH
   # create user and database
-  sudo -u postgres -i psql -f $initialPATH/postgresqlConfig.sql
+  sudo -u postgres psql -f $initialPATH/postgresqlConfig.sql
   chown ${current_owner} $initialPATH/postgresqlConfig.sql
   chown ${current_owner} $initialPATH
 
@@ -114,7 +114,7 @@ if $project_configuration; then
 
   echo ""
   echo --
-  echo "Directorio del servidor: "
+  echo "Server directory: "
   echo --
   echo ""
 
@@ -135,6 +135,10 @@ if $project_configuration; then
   echo ----
   echo ""
   git clone https://github.com/InspectorIncognito/server.git
+  cd server
+  git submodule init
+  git submodule update
+  cd ..
 
   # configure wsgi
   cd $initialPATH
@@ -153,7 +157,7 @@ if $project_configuration; then
 
   # install all dependencies of python to the project
   cd $PROJECT_DEST/server
-  sudo pip install -r requirements.txt
+  pip install -r requirements.txt
 
   # initialize the database
   python manage.py makemigrations
