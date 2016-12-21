@@ -21,10 +21,10 @@ IP_SERVER=$2
 #####################################################################
 
 install_packages=true
-postgresql_configuration=true
-project_configuration=true
-apache_configuration=true
-import_data=true
+postgresql_configuration=false
+project_configuration=false
+apache_configuration=false
+import_data=false
 
 USER_NAME="server"
 PROJECT_DEST=/home/"$USER_NAME"/Documents
@@ -41,8 +41,7 @@ if id "$USER_NAME" >/dev/null 2>&1; then
     echo "User $USER_NAME already exists.. skipping"
 else
     echo "User $USER_NAME does not exists.. CREATING!"
-    useradd $USER_NAME
-    passwd $USER_NAME
+    adduser $USER_NAME
 fi
 
 
