@@ -55,17 +55,18 @@ if $install_packages; then
     # Ejample: ssh -X .....
     # then run eog <image>
     # and wait 
-    sudo apt-get update 
-    sudo apt-get upgrade
+    apt-get update 
+    apt-get upgrade
 
     # PPA for JAVA
-    sudo add-apt-repository ppa:webupd8team/java
+    add-apt-repository ppa:webupd8team/java
 
-    sudo apt-get --yes --force-yes install build-essential apache2 git python-setuptools libapache2-mod-wsgi python-dev libpq-dev postgresql postgresql-contrib eog oracle-java8-installer
+    apt-get --yes --force-yes install build-essential apache2 git python-setuptools libapache2-mod-wsgi python-dev libpq-dev postgresql postgresql-contrib 
+    apt-get --yes --force-yes install eog oracle-java8-installer
     sudo apt-get install openssh-server
     
     # easy_install is a python module bundled with setuptools that lets you automatically download, build, install, and manage Python packages.
-    sudo easy_install pip
+    easy_install pip
 fi
 
 
