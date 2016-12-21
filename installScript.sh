@@ -20,8 +20,8 @@ IP_SERVER=$2
 # CONFIGURATION
 #####################################################################
 
-install_packages=true
-postgresql_configuration=false
+install_packages=false
+postgresql_configuration=true
 project_configuration=false
 apache_configuration=false
 import_data=false
@@ -83,16 +83,16 @@ if $postgresql_configuration; then
   # get the version of psql
   psqlVersion=$(psql -V | egrep -o '[0-9]{1,}\.[0-9]{1,}')
   # change config of psql
-  sudo python replaceConfigPSQL.py $psqlVersion
-  sudo service postgresql restart
+  python replaceConfigPSQL.py $psqlVersion
+  service postgresql restart
   # postgres user has to be owner of the file and folder that contain the file
   current_owner=$(stat -c '%U' .)
-  sudo chown postgres $initialPATH/postgresqlConfig.sql
-  sudo chown postgres $initialPATH
+  chown postgres $initialPATH/postgresqlConfig.sql
+  chown postgres $initialPATH
   # create user and database
   sudo -u postgres -i psql -f $initialPATH/postgresqlConfig.sql
-  sudo chown ${current_owner} $initialPATH/postgresqlConfig.sql
-  sudo chown ${current_owner} $initialPATH
+  chown ${current_owner} $initialPATH/postgresqlConfig.sql
+  chown ${current_owner} $initialPATH
 
   echo ----
   echo ----
