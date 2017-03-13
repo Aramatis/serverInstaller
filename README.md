@@ -58,10 +58,11 @@ It is highly recommended to read the script before running it and ALSO EXECUTTE 
 
 ### KNOWN ISSUE
 
-The `project_configuration` step WILL FAIL!.. so, prefer setting the remaining steps variables to `false` and then fix it this way:
-- get a google key file from somewhere
-- place this key under `<django-git-cloned-folder>/server/keys`, under the name of `google_key.json`. 
-
+The `project_configuration` step WILL FAIL!.. so, prefer setting the remaining steps variables to `false` and then fix it this way: Create create the next files:
+- google_key.txt
+- admin.json
+- email_config.json
+- android_requests_backups.py: It can find a template [here](https://github.com/InspectorIncognito/AndroidRequestsBackups/blob/master/transapp_settings.template.py)
 
 ### RUN
 
