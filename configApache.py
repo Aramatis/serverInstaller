@@ -93,8 +93,8 @@ import os
 if len(sys.argv) < 4:
     pass
 else:
-    #configFile = getConfigFileHTTP(sys.argv[1])
-    configFile = getConfigFileHTTPS(sys.argv[1], sys.argv[2])
+    configFile = getConfigFileHTTP(sys.argv[1])
+    #configFile = getConfigFileHTTPS(sys.argv[1], sys.argv[2])
 
     #Writte the file to destine
     path = '/etc/apache2/sites-available/'
