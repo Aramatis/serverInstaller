@@ -23,7 +23,7 @@ IP_SERVER=$2
 install_packages=false
 postgresql_configuration=false
 project_configuration=false
-apache_configuration=false
+apache_configuration=true
 import_data=false
 
 USER_NAME="server"
@@ -154,6 +154,8 @@ if $project_configuration; then
   mkdir -p "$LOG_DIR"
   touch $LOG_DIR/file.log
   chmod 777 "$LOG_DIR"/file.log
+  touch $LOG_DIR/dbfile.log
+  chmod 777 "$LOG_DIR"/dbfile.log
 
   # install all dependencies of python to the project
   cd "$PROJECT_DEST"/server
@@ -282,7 +284,8 @@ if $import_data; then
   echo ----
 
   cd $PROJECT_DEST/server
-  python loadData.py busstop InitialData/busstop.csv service InitialData/services.csv servicesbybusstop InitialData/servicesbybusstop.csv servicestopdistance InitialData/servicestopdistance.csv ServiceLocation InitialData/servicelocation.csv event InitialData/events.csv route InitialData/routes.csv
+  DATA_VERSION="v1.1"
+  python loadData.py "$DATA_VERSION" busstop InitialData/"$DATA_VERSION"/busstop.csv service InitialData/"$DATA_VERSION"/services.csv servicesbybusstop InitialData/"$DATA_VERSION"/servicesbybusstop.csv servicestopdistance InitialData/"$DATA_VERSION"/servicestopdistance.csv ServiceLocation InitialData/"$DATA_VERSION"/servicelocation.csv event InitialData/events.csv
 
   echo ----
   echo ----
