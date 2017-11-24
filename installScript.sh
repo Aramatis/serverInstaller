@@ -164,6 +164,9 @@ if $project_configuration; then
   # initialize the database
   python manage.py makemigrations
   python manage.py migrate
+  
+  # add fixtures
+  python manage.py loaddata events levels scoreEvents
   # add the cron task data
   python manage.py crontab add
 
@@ -284,8 +287,8 @@ if $import_data; then
   echo ----
 
   cd $PROJECT_DEST/server
-  DATA_VERSION="v1.1"
-  python loadData.py "$DATA_VERSION" busstop InitialData/"$DATA_VERSION"/busstop.csv service InitialData/"$DATA_VERSION"/services.csv servicesbybusstop InitialData/"$DATA_VERSION"/servicesbybusstop.csv servicestopdistance InitialData/"$DATA_VERSION"/servicestopdistance.csv ServiceLocation InitialData/"$DATA_VERSION"/servicelocation.csv event InitialData/events.csv
+  DATA_VERSION="v1.4"
+  python manage.py loadgtfsdata "$DATA_VERSION" stop route routelocation routestopdistance routebystop shape
 
   echo ----
   echo ----
