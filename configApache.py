@@ -18,6 +18,16 @@ def getConfigFileHTTP(pathToProyect):
                 Require all granted
         </Directory>
 
+        Alias /media ''' + pathToProyect + '''/server/media/reported_images
+        <Directory ''' + pathToProyect + '''/server/media/reported_images>
+                Require all granted
+        </Directory>
+
+        Alias /gtfsdata ''' + pathToProyect + '''/server/gtfs/data
+        <Directory ''' + pathToProyect + '''/server/gtfs/data>
+                Require all granted
+        </Directory>
+        
         <Directory ''' + pathToProyect + '''/server/server>
                 <Files wsgi.py>
                       Require all granted
