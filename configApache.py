@@ -18,8 +18,8 @@ def getConfigFileHTTP(pathToProyect):
                 Require all granted
         </Directory>
 
-        Alias /media ''' + pathToProyect + '''/server/media/reported_images
-        <Directory ''' + pathToProyect + '''/server/media/reported_images>
+        Alias /media ''' + pathToProyect + '''/server/media
+        <Directory ''' + pathToProyect + '''/server/media>
                 Require all granted
         </Directory>
 
